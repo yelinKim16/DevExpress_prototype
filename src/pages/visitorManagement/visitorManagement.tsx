@@ -1,23 +1,39 @@
-import React, { useState, useCallback } from "react";
-import "devextreme/data/odata/store";
-import DataGrid, {
-  Column,
-  DataGridTypes,
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { saveAs } from "file-saver-es";
+import { Workbook } from "exceljs";
+import "./visitorManagement.scss";
+import {
+  DataGrid,
+  Selection,
+  SearchPanel,
   Export,
-  FilterRow,
-  Grouping,
-  GroupPanel,
+  Toolbar,
   Item,
   LoadPanel,
-  SearchPanel,
-  Selection,
-  Toolbar,
-} from "devextreme-react/cjs/data-grid";
+  DataGridTypes,
+  FilterRow,
+  Column,
+  Editing,
+  Paging,
+  Pager,
+  Popup,
+  DataGridRef,
+} from "devextreme-react/data-grid";
 import Button from "devextreme-react/button";
-import { visitorManagement } from "../../components/mock/visitorManagement";
-import { Workbook } from "exceljs";
-import { saveAs } from "file-saver-es";
 import { exportDataGrid } from "devextreme/excel_exporter";
+import { AddVisitorPopup } from "./addVisitorPopup";
+import notify from "devextreme/ui/notify";
+import { createStore } from "devextreme-aspnet-data-nojquery";
+import VisitorManagementEdit from "./editPopup";
+
+const url = "http://localhost:3001/visitorManagements";
+const allowedPageSizes = [10, 20, 30];
+
+const dataSource = createStore({
+  key: "id",
+  loadUrl: url,
+  insertUrl: url,
+});
 
 // 엑셀 export
 const onExporting = (e: DataGridTypes.ExportingEvent) => {
@@ -38,75 +54,134 @@ const onExporting = (e: DataGridTypes.ExportingEvent) => {
   });
 };
 
-export default function VisitorManagemnet() {
-  const [popupVisible, setPopupVisible] = useState(false);
+export default function VisitorManagement() {
+  const [isPopupVisible, setPopupVisible] = useState(false);
+  const gridRef = useRef<DataGridRef>(null);
 
-  // popup
+  const refresh = useCallback(() => {
+    gridRef.current?.instance().refresh();
+  }, []);
+
+  // 팝업
+  const onAddVisitorClick = () => {
+    setPopupVisible(true);
+  };
+
+  const onPopupHiding = () => {
+    setPopupVisible(false);
+  };
+
+  const onFormSubmit = (e: any) => {
+    e.preventDefault();
+    setPopupVisible(false);
+  };
+  const onSaveClick = useCallback(() => {
+    notify(
+      {
+        message: `New contac saved`,
+        position: { at: "bottom center", my: "bottom center" },
+      },
+      "success"
+    );
+
+    setPopupVisible(false);
+  }, []);
+
   const changePopupVisibility = useCallback((isVisble: any) => {
     setPopupVisible(isVisble);
   }, []);
 
-  const onAddContactClick = useCallback(() => {
-    setPopupVisible(true);
-  }, []);
-
-  const handleButtonClick = () => {
-    alert("Button clicked!");
-  };
-
   return (
     <React.Fragment>
-      <h2 className={"content-block"}>방문예약관리</h2>
+      <div className="view crm-contact-list">
+        <DataGrid
+          className="grid theme-dependent"
+          dataSource={dataSource as any}
+          showBorders={false}
+          columnAutoWidth={true} // 자동 너비
+          allowColumnReordering={true} // 사용자가 너비조정
+          remoteOperations={false} // 데이터가 서버에서 처리
+          onExporting={onExporting}
+        >
+          <Paging defaultPageSize={10} />
+          <Pager showPageSizeSelector={true} showInfo={true} />
 
-      <DataGrid
-        columnAutoWidth={true} // 자동 너비
-        allowColumnReordering={true} // 사용자가 너비조정
-        dataSource={visitorManagement}
-        onExporting={onExporting}
-      >
-        <SearchPanel visible placeholder="Contact Search" />
-        <Selection mode="multiple" />
-        <FilterRow visible={true} applyFilter="auto" />
-        <Export enabled={true} allowExportSelectedData={true} />
+          {/* <Pager
+            showPageSizeSelector={true}
+            allowedPageSizes={allowedPageSizes}
+            showNavigationButtons={true}
+          /> */}
+          <LoadPanel showPane={false} />
+          <SearchPanel visible />
+          <Selection mode="multiple" />
+          <FilterRow visible={true} applyFilter="auto" />
+          <Export enabled={true} allowExportSelectedData={true} />
 
-        <Toolbar>
-          <Item location="before">
-            <div className="grid-header">Contacts</div>
-          </Item>
-          {/* <Item location="after" locateInMenu="auto">
-            <Button
-              icon="create"
-              text="Add Contact"
-              type="default"
-              stylingMode="contained"
-              onClick={onAddContactClick}
+          <Toolbar>
+            <Item location="before">
+              <div className="grid-header">방문 예약 관리</div>
+            </Item>
+            <Item location="after" locateInMenu="auto">
+              <Button
+                icon="plus"
+                text="방문예약 정보작성"
+                type="default"
+                stylingMode="contained"
+                onClick={onAddVisitorClick}
+              />
+            </Item>
+            <Item
+              location="after"
+              locateInMenu="auto"
+              showText="inMenu"
+              widget="dxButton"
+            >
+              <Button
+                icon="refresh"
+                text="Refresh"
+                stylingMode="text"
+                onClick={refresh}
+              />
+            </Item>
+            <Item name="exportButton" />
+            <Item name="searchPanel" locateInMenu="auto" />
+          </Toolbar>
+          <Column dataField="visitorName" caption="방문자 이름" width={150} />
+          <Column
+            dataField="visitorCompany"
+            caption="방문자 회사"
+            width={150}
+          />
+          <Column dataField="contactNumber" caption="연락처" alignment="left" />
+          <Column dataField="contactName" caption="담당자 번호" />
+          <Column dataField="contactCompany" caption="담당자 회사" />
+          <Column dataField="visitPurpose" caption="방문 목적" />
+          <Column dataField="visitStatus" caption="방문 상태" />
+          <Column dataField="visitLocation" caption="방문 위치" />
+          <Editing
+            mode="popup"
+            allowUpdating={true}
+            allowDeleting={true}
+            allowAdding={true}
+          >
+            <Popup
+              title="방문자 정보"
+              showTitle={true}
+              width={700}
+              height={525}
             />
-          </Item>
-           */}
-          <Item location="after" locateInMenu="auto">
-            <button>My Button</button>
-          </Item>{" "}
-          <Item location="after" widget="dxButton" locateInMenu="auto">
-            <Button
-              icon="plus"
-              text="Add Task"
-              type="default"
-              stylingMode="contained"
-              onClick={onAddContactClick}
-            />
-          </Item>
-          <Item name="exportButton" />
-          <Item name="searchPanel" locateInMenu="auto" />
-        </Toolbar>
-        <Column dataField="VisitorName" width={150}></Column>
-        <Column dataField="VisitorCompany" width={150}></Column>
-        <Column dataField="ContactNumber"></Column>
-        <Column dataField="ContactName"></Column>
-        <Column dataField="ContactCompany"></Column>
-        <Column dataField="VisitPurpose"></Column>
-        <Column dataField="VisitStatus"></Column>
-        <Column dataField="VisitLocation"></Column>
-      </DataGrid>
+            <VisitorManagementEdit />
+          </Editing>
+        </DataGrid>
+
+        {/* Popup for adding a visitor */}
+        <AddVisitorPopup
+          title="방문예약 정보작성"
+          visible={isPopupVisible}
+          setVisible={changePopupVisibility}
+          onSave={onSaveClick}
+        />
+      </div>
     </React.Fragment>
   );
 }

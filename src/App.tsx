@@ -1,9 +1,12 @@
 import "devextreme/dist/css/dx.common.css";
 import "./themes/generated/theme.base.css";
 import "./themes/generated/theme.additional.css";
-import React from "react";
+import React, { useEffect } from "react";
+import { loadMessages, locale } from "devextreme/localization";
+import koMessages from "./locales/kr/ko.json";
 import { HashRouter as Router } from "react-router-dom";
 import "./dx-styles.scss";
+import "devextreme/dist/css/dx.material.teal.light.compact.css";
 import LoadPanel from "devextreme-react/load-panel";
 import { NavigationProvider } from "./contexts/navigation";
 import { AuthProvider, useAuth } from "./contexts/auth";
@@ -13,6 +16,11 @@ import UnauthenticatedContent from "./UnauthenticatedContent";
 
 function App() {
   const { user, loading } = useAuth();
+
+  useEffect(() => {
+    loadMessages(koMessages);
+    locale("ko");
+  }, []);
 
   if (loading) {
     return <LoadPanel visible={true} />;
