@@ -1,4 +1,10 @@
-import React, { PropsWithChildren, useCallback, useRef } from "react";
+import React, {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Popup } from "devextreme-react/popup";
 import "./addVisitorPopup.scss";
 import Form, {
@@ -9,9 +15,10 @@ import Form, {
 } from "devextreme-react/cjs/form";
 import { ValidationGroupRef } from "devextreme-react/validation-group";
 import notify from "devextreme/ui/notify";
-import { postVisitorManagement } from "../../api/visitorManagement";
-import SelectBox, { SelectBoxTypes } from "devextreme-react/select-box";
 import { createStore } from "devextreme-aspnet-data-nojquery";
+import { useMutation } from "react-query";
+import axios from "axios";
+import DxForm from "devextreme/ui/form";
 
 type PopupProps = {
   title: string;
@@ -23,7 +30,6 @@ type PopupProps = {
   setVisible: (visible: boolean) => void;
   onSave?: () => void;
 };
-
 export const AddVisitorPopup = ({
   title,
   visible,
@@ -31,7 +37,6 @@ export const AddVisitorPopup = ({
   height = "auto",
   onSave,
   setVisible,
-
   wrapperAttr = { class: "" },
   isSaveDisabled = false,
 }: PropsWithChildren<PopupProps>) => {
@@ -42,33 +47,35 @@ export const AddVisitorPopup = ({
     setVisible(false);
   };
 
-  const url = "http://localhost:3001/comments";
+  const url = "http://localhost:3001/visitorManagements";
 
-  const dataSource = createStore({
-    key: "id",
-    loadUrl: url,
-    insertUrl: url,
-  });
+  const [formData, setFormData] = useState({});
 
-  const positionOptions = {
-    items: dataSource,
-    value: "",
-  };
-
-  const handleSubmit = useCallback((e: { preventDefault: () => void }) => {
-    notify(
-      {
-        message: "생성되었습니다.",
-        position: {
-          my: "center top",
-          at: "right top",
-        },
-      },
-      "success",
-      3000
-    );
-    e.preventDefault();
-  }, []);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault(); // 기본 폼 제출 방지
+      axios
+        .post(url, formData)
+        .then((response) => {
+          notify(
+            {
+              message: "생성되었습니다.",
+              position: {
+                my: "center top",
+                at: "right top",
+              },
+            },
+            "success",
+            3000
+          );
+          setVisible(false); // 창 닫힘
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    },
+    [formData]
+  );
 
   return (
     <Popup
@@ -89,19 +96,23 @@ export const AddVisitorPopup = ({
       showCloseButton={true} // 닫기 버튼 표시
     >
       <div id="app-container">
-        <form action="/visitManagements" method="post" onSubmit={handleSubmit}>
-          <Form id="form" labelLocation="top" showColonAfterLabel={false}>
+        <form action="/visitManagements" onSubmit={handleSubmit}>
+          <Form
+            formData={formData}
+            labelLocation="top"
+            showColonAfterLabel={false}
+          >
             <GroupItem>
               <GroupItem>
                 <GroupItem caption="방문자 정보" colCount={2}>
                   <SimpleItem
-                    dataField="vistorName"
+                    dataField="visitorName"
                     label={{ text: "방문자 이름" }}
                     isRequired={true}
                     editorOptions={{ height: 35 }}
                   />
                   <SimpleItem
-                    dataField="vistorCompany"
+                    dataField="visitorCompany"
                     label={{ text: "방문자 회사" }}
                     isRequired={true}
                     editorOptions={{ height: 35 }}
@@ -127,7 +138,7 @@ export const AddVisitorPopup = ({
                     horizontalAlignment="center"
                     cssClass="scan-button"
                   >
-                    <ButtonOptions text="스캐너" />
+                    <ButtonOptions text="스캐너" width={300} height={40} />
                   </ButtonItem>
                 </GroupItem>
               </GroupItem>
@@ -156,7 +167,6 @@ export const AddVisitorPopup = ({
                     dataField="contactDepartment"
                     label={{ text: "담당자 부서" }}
                     editorType="dxSelectBox"
-                    editorOptions={positionOptions}
                   />
                 </GroupItem>
               </GroupItem>
@@ -181,12 +191,17 @@ export const AddVisitorPopup = ({
                     dataField="visitWorkPlace"
                     label={{ text: "사업장" }}
                     editorType="dxSelectBox"
-                    editorOptions={positionOptions}
+                    // editorOptions={positionOptions}
                   />
                 </GroupItem>
               </GroupItem>
               <ButtonItem horizontalAlignment="right">
-                <ButtonOptions text="저장" useSubmitBehavior={true} />
+                <ButtonOptions
+                  text="저장"
+                  useSubmitBehavior={true}
+                  width={100}
+                  height={35}
+                />
               </ButtonItem>
             </GroupItem>
           </Form>
@@ -195,63 +210,3 @@ export const AddVisitorPopup = ({
     </Popup>
   );
 };
-
-{
-  /* <SimpleItem
-dataField="vistor name"
-label={{ text: "방문자 이름" }}
-isRequired={true}
-editorOptions={{ height: 35 }}
-/> */
-}
-
-{
-  /* <GroupItem>
-<GroupItem>
-  <GroupItem caption="방문자 정보" colCount={2}>
-    <SimpleItem
-      dataField="vistorName"
-      label={{ text: "방문자 이름" }}
-      isRequired={true}
-      editorOptions={{ height: 35 }}
-    />
-    <SimpleItem
-      dataField="vistorCompany"
-      label={{ text: "회사" }}
-      isRequired={true}
-      editorOptions={{ height: 35 }}
-    />
-  </GroupItem>
-  <GroupItem colCount={2}>
-    <SimpleItem
-      dataField="contactNumber"
-      editorOptions={{ height: 35 }}
-    />
-    <SimpleItem
-      dataField="contactName"
-      editorOptions={{ height: 35 }}
-    />
-    <SimpleItem
-      dataField="contactCompany"
-      editorOptions={{ height: 35 }}
-    />
-  </GroupItem>
-</GroupItem>
-<GroupItem>
-  <GroupItem caption="담당자 정보" name="HomeAddress">
-    <SimpleItem
-      dataField="visitPurpose"
-      editorOptions={{ height: 35 }}
-    />
-    <SimpleItem
-      dataField="visitStatus"
-      editorOptions={{ height: 35 }}
-    />
-    <SimpleItem
-      dataField="visitLocation"
-      editorOptions={{ height: 35 }}
-    />
-  </GroupItem>
-</GroupItem>
-</GroupItem> */
-}

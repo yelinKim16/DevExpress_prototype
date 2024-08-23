@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { saveAs } from "file-saver-es";
 import { Workbook } from "exceljs";
 import "./visitorManagement.scss";
@@ -22,17 +22,17 @@ import {
 import Button from "devextreme-react/button";
 import { exportDataGrid } from "devextreme/excel_exporter";
 import { AddVisitorPopup } from "./addVisitorPopup";
-import notify from "devextreme/ui/notify";
 import { createStore } from "devextreme-aspnet-data-nojquery";
 import VisitorManagementEdit from "./editPopup";
+import axios from "axios";
 
 const url = "http://localhost:3001/visitorManagements";
-const allowedPageSizes = [10, 20, 30];
 
 const dataSource = createStore({
   key: "id",
   loadUrl: url,
   insertUrl: url,
+  updateUrl: url,
 });
 
 // 엑셀 export
@@ -67,29 +67,11 @@ export default function VisitorManagement() {
     setPopupVisible(true);
   };
 
-  const onPopupHiding = () => {
-    setPopupVisible(false);
-  };
-
-  const onFormSubmit = (e: any) => {
-    e.preventDefault();
-    setPopupVisible(false);
-  };
-  const onSaveClick = useCallback(() => {
-    notify(
-      {
-        message: `New contac saved`,
-        position: { at: "bottom center", my: "bottom center" },
-      },
-      "success"
-    );
-
-    setPopupVisible(false);
-  }, []);
-
   const changePopupVisibility = useCallback((isVisble: any) => {
     setPopupVisible(isVisble);
   }, []);
+
+  //
 
   return (
     <React.Fragment>
@@ -105,12 +87,6 @@ export default function VisitorManagement() {
         >
           <Paging defaultPageSize={10} />
           <Pager showPageSizeSelector={true} showInfo={true} />
-
-          {/* <Pager
-            showPageSizeSelector={true}
-            allowedPageSizes={allowedPageSizes}
-            showNavigationButtons={true}
-          /> */}
           <LoadPanel showPane={false} />
           <SearchPanel visible />
           <Selection mode="multiple" />
@@ -173,13 +149,10 @@ export default function VisitorManagement() {
             <VisitorManagementEdit />
           </Editing>
         </DataGrid>
-
-        {/* Popup for adding a visitor */}
         <AddVisitorPopup
           title="방문예약 정보작성"
           visible={isPopupVisible}
           setVisible={changePopupVisibility}
-          onSave={onSaveClick}
         />
       </div>
     </React.Fragment>
