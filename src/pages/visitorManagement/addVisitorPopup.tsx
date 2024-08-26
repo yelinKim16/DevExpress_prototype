@@ -15,10 +15,35 @@ import Form, {
 } from "devextreme-react/cjs/form";
 import { ValidationGroupRef } from "devextreme-react/validation-group";
 import notify from "devextreme/ui/notify";
-import { createStore } from "devextreme-aspnet-data-nojquery";
-import { useMutation } from "react-query";
 import axios from "axios";
-import DxForm from "devextreme/ui/form";
+
+const departmentEditorOptions = {
+  items: ["인사부", "개발부", "영업부"],
+  searchEnabled: true, // 선택 항목 검색을 허용하려면 추가
+  value: "", // 초기 선택된 값 (선택사항)
+};
+
+const workPlaceEditorOptions = {
+  items: ["이즈원", "네이버", "카카오"],
+  searchEnabled: true,
+  value: "",
+};
+
+type VisitorFormData = {
+  visitorName: string;
+  visitorCompany: string;
+  visitorNumber: string;
+  visitorDepartment: string;
+  visitorPosition: string;
+  contactName: string;
+  contactNumber: string;
+  contactCompany: string;
+  contactDepartment: string;
+  cardName: string;
+  visitLocation: string;
+  visitPurpose: string;
+  visitWorkPlace: string;
+};
 
 type PopupProps = {
   title: string;
@@ -29,6 +54,7 @@ type PopupProps = {
   isSaveDisabled?: boolean;
   setVisible: (visible: boolean) => void;
   onSave?: () => void;
+  // formData: VisitorFormData;
 };
 export const AddVisitorPopup = ({
   title,
@@ -39,13 +65,9 @@ export const AddVisitorPopup = ({
   setVisible,
   wrapperAttr = { class: "" },
   isSaveDisabled = false,
-}: PropsWithChildren<PopupProps>) => {
+}: // formData,
+PropsWithChildren<PopupProps>) => {
   const validationGroup = useRef<ValidationGroupRef>(null); //유효성 검사
-
-  const close = () => {
-    validationGroup.current?.instance().reset(); //폼초기화
-    setVisible(false);
-  };
 
   const url = "http://localhost:3001/visitorManagements";
 
@@ -53,6 +75,7 @@ export const AddVisitorPopup = ({
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
+      console.log(formData);
       e.preventDefault(); // 기본 폼 제출 방지
       axios
         .post(url, formData)
@@ -77,6 +100,9 @@ export const AddVisitorPopup = ({
     [formData]
   );
 
+  // management로 formData넘길 방법
+  // 넘겨서 버튼 누를때 setValue를 초기화 시키면 됨.
+
   return (
     <Popup
       title={title}
@@ -92,7 +118,6 @@ export const AddVisitorPopup = ({
         class: `${wrapperAttr?.class} form-popup`,
       }}
       height={height}
-      onHiding={() => setVisible(false)} // 팝업이 닫힐 때 호출
       showCloseButton={true} // 닫기 버튼 표시
     >
       <div id="app-container">
@@ -167,6 +192,7 @@ export const AddVisitorPopup = ({
                     dataField="contactDepartment"
                     label={{ text: "담당자 부서" }}
                     editorType="dxSelectBox"
+                    editorOptions={departmentEditorOptions}
                   />
                 </GroupItem>
               </GroupItem>
@@ -191,7 +217,7 @@ export const AddVisitorPopup = ({
                     dataField="visitWorkPlace"
                     label={{ text: "사업장" }}
                     editorType="dxSelectBox"
-                    // editorOptions={positionOptions}
+                    editorOptions={workPlaceEditorOptions}
                   />
                 </GroupItem>
               </GroupItem>
