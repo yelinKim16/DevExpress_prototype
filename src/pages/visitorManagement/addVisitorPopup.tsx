@@ -1,10 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { PropsWithChildren, useCallback, useRef, useState } from "react";
 import { Popup } from "devextreme-react/popup";
 import "./addVisitorPopup.scss";
 import Form, {
@@ -14,7 +8,7 @@ import Form, {
   SimpleItem,
 } from "devextreme-react/cjs/form";
 import { ValidationGroupRef } from "devextreme-react/validation-group";
-import notify from "devextreme/ui/notify";
+import swal from "sweetalert";
 import axios from "axios";
 
 const departmentEditorOptions = {
@@ -80,17 +74,11 @@ PropsWithChildren<PopupProps>) => {
       axios
         .post(url, formData)
         .then((response) => {
-          notify(
-            {
-              message: "생성되었습니다.",
-              position: {
-                my: "center top",
-                at: "right top",
-              },
-            },
-            "success",
-            3000
-          );
+          swal({
+            text: "방문자 정보 저장되었습니다.",
+            icon: "success",
+            timer: 1500,
+          });
           setVisible(false); // 창 닫힘
         })
         .catch((error) => {
@@ -99,6 +87,30 @@ PropsWithChildren<PopupProps>) => {
     },
     [formData]
   );
+
+  const onClickScanner = () => {
+    swal({
+      text: "스캐너를 실행하시겠습니까?",
+      icon: "info",
+      buttons: ["취소", "확인"],
+    }).then((result) => {
+      if (result) {
+        // "확인" 버튼을 눌렀을 때
+        swal({
+          text: "적용되었습니다.",
+          icon: "success",
+          timer: 1500,
+        });
+      } else {
+        // "취소" 버튼을 눌렀을 때
+        swal({
+          text: "취소되었습니다.",
+          icon: "warning",
+          timer: 1500,
+        });
+      }
+    });
+  };
 
   // management로 formData넘길 방법
   // 넘겨서 버튼 누를때 setValue를 초기화 시키면 됨.
@@ -109,7 +121,7 @@ PropsWithChildren<PopupProps>) => {
       visible={visible}
       width={width}
       enableBodyScroll={true}
-      hideOnOutsideClick={true} // 외부 클릭할 시 창 꺼짐
+      hideOnOutsideClick={false} // 외부 클릭할 시 창 꺼짐
       resizeEnabled={true}
       // maxHeight={700}
       // onInitialized
@@ -118,6 +130,7 @@ PropsWithChildren<PopupProps>) => {
         class: `${wrapperAttr?.class} form-popup`,
       }}
       height={height}
+      onHiding={() => setVisible(false)} // 팝업이 닫힐 때 호출
       showCloseButton={true} // 닫기 버튼 표시
     >
       <div id="app-container">
@@ -163,7 +176,12 @@ PropsWithChildren<PopupProps>) => {
                     horizontalAlignment="center"
                     cssClass="scan-button"
                   >
-                    <ButtonOptions text="스캐너" width={300} height={40} />
+                    <ButtonOptions
+                      text="스캐너"
+                      onClick={onClickScanner}
+                      width={300}
+                      height={40}
+                    />
                   </ButtonItem>
                 </GroupItem>
               </GroupItem>
