@@ -203,32 +203,6 @@
       "visitStatus": "방문전",
       "visitLocation": "회의실",
       "visitWorkPlace": "SH"
-    },
-    {
-      "id": "233",
-      "visitorName": "김예린ㅇㄴㄷㄴ",
-      "visitorCompany": "김예린회사ㄴㄴ"
-    },
-    {
-      "id": "51bc",
-      "visItorName": "김바다",
-      "vistorCompany": "카카오",
-      "visitorNumber": "10356"
-    },
-    {
-      "id": "7a20",
-      "visitorName": "gggg히히히히히",
-      "visitorCompany": "히히"
-    },
-    {
-      "id": "3f5e",
-      "visitorName": "dfsf",
-      "visitorCompany": "wf"
-    },
-    {
-      "id": "c5ab",
-      "visitorName": "dfsf",
-      "visitorCompany": "wf"
     }
   ],
   "workplaces": [
@@ -241,7 +215,41 @@
       "body": "B"
     }
   ],
-  "profile": {
-    "name": "typicode"
+  "accessStructure": {
+    "name": "John Heart",
+    "title": "SH",
+    "category": "Root",
+    "workplace": "SH",
+    "doortype": "BS",
+    "items": [
+      {
+        "name": "Samantha Bright",
+        "title": "Reader1",
+        "category": "Reader",
+        "workplace": "SH",
+        "doortype": "BS"
+      },
+      {
+        "name": "Arthur Miller",
+        "Tittitlele": "Reader2",
+        "category": "Reader",
+        "workplace": "SH",
+        "doortype": "BS"
+      },
+      {
+        "name": "Robert Reagan",
+        "title": "Reader3",
+        "category": "Reader",
+        "workplace": "SH",
+        "doortype": "BS"
+      },
+      {
+        "name": "Greta Sims",
+        "title": "Reader4",
+        "category": "Reader",
+        "workplace": "SH",
+        "doortype": "BS"
+      }
+    ]
   }
 }

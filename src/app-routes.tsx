@@ -1,4 +1,11 @@
-import { HomePage, TasksPage, ProfilePage, VisitorManagement } from "./pages";
+import {
+  HomePage,
+  TasksPage,
+  ProfilePage,
+  VisitorManagement,
+  AccessStructure,
+  // VisitorCount,
+} from "./pages";
 import { withNavigationWatcher } from "./contexts/navigation";
 
 const routes = [
@@ -17,6 +24,14 @@ const routes = [
   {
     path: "/home",
     element: HomePage,
+  },
+  {
+    path: "/access-structure",
+    element: AccessStructure,
+  },
+  {
+    path: "/visitor-count",
+    element: AccessStructure,
   },
 ];
 

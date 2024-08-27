@@ -20,6 +20,14 @@ export const navigation = [
         text: "방문예약관리",
         path: "/visitor-management",
       },
+      {
+        text: "출입문구조",
+        path: "/access-structure",
+      },
+      {
+        text: "방문자관리",
+        path: "/visitor-count",
+      },
     ],
   },
 ];
