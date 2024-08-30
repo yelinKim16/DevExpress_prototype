@@ -1,5 +1,4 @@
 const appInfo = {
-    title: 'Example App'
+  title: "DevExpress_prototype",
 };
 export default appInfo;
-

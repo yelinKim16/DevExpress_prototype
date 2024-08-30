@@ -25,14 +25,72 @@ import { AddVisitorPopup } from "./addVisitorPopup";
 import { createStore } from "devextreme-aspnet-data-nojquery";
 import VisitorManagementEdit from "./editPopup";
 import axios from "axios";
+import CustomStore from "devextreme/data/custom_store";
+import swal from "sweetalert";
 
 const url = "http://localhost:3001/visitorManagements";
 
-const dataSource = createStore({
+const dataSources = createStore({
   key: "id",
   loadUrl: url,
-  insertUrl: url,
-  updateUrl: url,
+});
+
+const dataSource = new CustomStore({
+  key: "id",
+  load: function () {
+    return fetch(url)
+      .then((response) => response.json())
+      .catch(() => {
+        throw "Data loading error";
+      });
+  },
+  insert: function (values) {
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(values),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .catch(() => {
+        throw "Data insert error";
+      });
+  },
+  update: function (key, values) {
+    return fetch(`${url}/${key}`, {
+      method: "PUT",
+      body: JSON.stringify(values),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .catch(() => {
+        throw "Data update error";
+      });
+  },
+  remove: function (key) {
+    return fetch(`${url}s/${key}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => {
+        if (response.ok) {
+          swal({
+            text: "방문 예약이 삭제되었습니다.",
+            icon: "success",
+            timer: 1500,
+          });
+        } else {
+          throw new Error("Failed to delete");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        swal({
+          text: "삭제에 실패했습니다.",
+          icon: "error",
+          timer: 1500,
+        });
+      });
+  },
 });
 
 // 엑셀 export
@@ -75,9 +133,9 @@ export default function VisitorManagement() {
 
   return (
     <React.Fragment>
-      <div className="view crm-contact-list">
+      <div className={"content-block"}>
+        <div className="grid-header">방문 예약 관리</div>
         <DataGrid
-          className="grid theme-dependent"
           dataSource={dataSource as any}
           showBorders={false}
           columnAutoWidth={true} // 자동 너비
@@ -94,9 +152,6 @@ export default function VisitorManagement() {
           <Export enabled={true} allowExportSelectedData={true} />
 
           <Toolbar>
-            <Item location="before">
-              <div className="grid-header">방문 예약 관리</div>
-            </Item>
             <Item location="after" locateInMenu="auto">
               <Button
                 icon="plus"

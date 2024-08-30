@@ -1,6 +1,14 @@
-import "devextreme/dist/css/dx.common.css";
-import "./themes/generated/theme.base.css";
+// import "devextreme/dist/css/dx.common.css";
+// import "devextreme/dist/css/dx.light.css"; // generic light 테마
+// import "./themes/generated/theme.base.css";
+// import "./themes/generated/theme.additional.css";
+// import "devextreme/dist/css/dx.generic.custom.css";
+// import 'devextreme/dist/css/dx.common.css';
+// import "./themes/generated/theme.base.css";
 import "./themes/generated/theme.additional.css";
+import "devextreme/dist/css/dx.softblue.compact.css";
+// 또는
+
 import React, { useEffect } from "react";
 import { loadMessages, locale } from "devextreme/localization";
 import koMessages from "./locales/kr/ko.json";

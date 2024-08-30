@@ -12,10 +12,10 @@ export const navigation = [
         text: "Profile",
         path: "/profile",
       },
-      {
-        text: "Tasks",
-        path: "/tasks",
-      },
+      // {
+      //   text: "Tasks",
+      //   path: "/tasks",
+      // },
       {
         text: "방문예약관리",
         path: "/visitor-management",
@@ -26,7 +26,7 @@ export const navigation = [
       },
       {
         text: "방문자관리",
-        path: "/visitor-count",
+        path: "/access-count",
       },
     ],
   },

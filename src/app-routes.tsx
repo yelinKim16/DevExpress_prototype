@@ -4,6 +4,7 @@ import {
   ProfilePage,
   VisitorManagement,
   AccessStructure,
+  AccessCount,
   // VisitorCount,
 } from "./pages";
 import { withNavigationWatcher } from "./contexts/navigation";
@@ -32,6 +33,10 @@ const routes = [
   {
     path: "/visitor-count",
     element: AccessStructure,
+  },
+  {
+    path: "/access-count",
+    element: AccessCount,
   },
 ];
 

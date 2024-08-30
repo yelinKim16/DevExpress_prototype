@@ -1,17 +1,27 @@
 import React, { useCallback, useState } from "react";
-// import "devextreme/dist/css/dx.light.css";
-import { Column, RowDragging, TreeList } from "devextreme-react/tree-list";
+import TreeList, {
+  Column,
+  Editing,
+  HeaderFilter,
+  RowDragging,
+  SearchPanel,
+  TreeListTypes,
+} from "devextreme-react/tree-list";
 import { createStore } from "devextreme-aspnet-data-nojquery";
-import {
-  dragAccessStructure as accessStructureList,
-  dragAccessStructure,
-} from "./dragData";
+import CustomStore from "devextreme/data/custom_store";
+import { dragAccessStructure } from "./dragData";
+
 const url = "http://localhost:3001/accessStructure";
-const dataSource = createStore({
+
+const dataSource = new CustomStore({
   key: "id",
-  loadUrl: url,
-  insertUrl: url,
-  updateUrl: url,
+  load: function () {
+    return fetch(url)
+      .then((response) => response.json())
+      .catch(() => {
+        throw "Data loading error";
+      });
+  },
 });
 
 const expandedRowKeys = [1];
@@ -29,6 +39,26 @@ const onDragChange = (e: any) => {
     }
     targetNode = targetNode.parent;
   }
+};
+
+const popupOptions = {
+  title: "Employee Info",
+  showTitle: true,
+  width: 600,
+  height: 280,
+};
+
+const allowDeleting = (e: any) => e.row.data.id !== 1;
+
+const onEditorPreparing = (e: TreeListTypes.EditorPreparingEvent) => {
+  if (e.dataField === "Head_ID" && e.row?.data.id === 1) {
+    e.editorOptions.disabled = true;
+    e.editorOptions.value = null;
+  }
+};
+
+const onInitNewRow = (e: TreeListTypes.InitNewRowEvent) => {
+  e.data.Head_ID = 1;
 };
 
 export default function AccessStructure() {
@@ -76,7 +106,8 @@ export default function AccessStructure() {
   );
 
   return (
-    <div>
+    <div className={"content-block"}>
+      <div className="grid-header">출입문 구조</div>
       <TreeList
         id="accessStructure"
         dataSource={accessStructure}
@@ -87,7 +118,11 @@ export default function AccessStructure() {
         parentIdExpr="head_id"
         defaultExpandedRowKeys={expandedRowKeys}
         columnAutoWidth={true}
+        onEditorPreparing={onEditorPreparing}
+        onInitNewRow={onInitNewRow}
       >
+        <SearchPanel visible={true} width={250} />
+        <HeaderFilter visible={true} />
         <RowDragging
           onDragChange={onDragChange}
           onReorder={onReorder}
@@ -99,6 +134,25 @@ export default function AccessStructure() {
         <Column dataField="category" />
         <Column dataField="workplace" />
         <Column dataField="doortype" />
+
+        <Editing
+          mode="popup"
+          allowUpdating={true}
+          allowDeleting={allowDeleting}
+          allowAdding={true}
+          popup={popupOptions}
+        />
+        {/* <Toolbar>
+          <Item
+            widget="dxButton"
+            options={{
+              icon: "plus",
+              text: "추가",
+            }}
+            location="after"
+          />
+          <Item name="searchPanel" />
+        </Toolbar> */}
       </TreeList>
     </div>
   );
