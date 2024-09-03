@@ -23,9 +23,14 @@ import { exportDataGrid } from "devextreme/excel_exporter";
 import { AddVisitorPopup } from "./addVisitorPopup";
 import swal from "sweetalert";
 import { visitorManagementData } from "../../lib/api/visitormanagement";
+import notify from "devextreme/ui/notify";
+import { DataGrid as DataGridInstance } from "devextreme-react/data-grid";
+import dxDataGrid from "devextreme/ui/data_grid";
 
 export default function VisitorManagement() {
   const [isPopupVisible, setPopupVisible] = useState(false);
+  const [insertData, setInsertData] = useState(null);
+  const dataGridRef = useRef<dxDataGrid>(null);
 
   const refresh = useCallback(() => {
     visitorManagementData.load();
@@ -48,6 +53,14 @@ export default function VisitorManagement() {
     e.cancel = true; // 기존 api 요청 cancel
     e.component.cancelEditData(); // 수정 후 팝업 닫기
   }
+
+  const onSaveClick = useCallback(() => {
+    console.log("저장된다힛");
+    if (dataGridRef.current) {
+      console.log("null이아님");
+      dataGridRef.current.refresh(); // DataGrid 새로고침
+    }
+  }, []);
 
   // 엑셀 export
   const onExporting = (e: DataGridTypes.ExportingEvent) => {
@@ -80,7 +93,6 @@ export default function VisitorManagement() {
           remoteOperations={false} // 데이터가 서버에서 처리
           onExporting={onExporting}
           onRowUpdating={updateRow}
-          onRowInserting={insertedRow}
         >
           <Paging defaultPageSize={10} />
           <Pager showPageSizeSelector={true} showInfo={true} />
@@ -139,6 +151,8 @@ export default function VisitorManagement() {
           title="방문예약 정보작성"
           visible={isPopupVisible}
           setVisible={changePopupVisibility}
+          // onDataChanged={onCreateData}
+          onSave={onSaveClick}
         />
       </div>
     </React.Fragment>

@@ -1,4 +1,10 @@
-import React, { PropsWithChildren, useCallback, useRef, useState } from "react";
+import React, {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Popup } from "devextreme-react/popup";
 import Form, {
   ButtonItem,
@@ -32,6 +38,7 @@ type PopupProps = {
   isSaveDisabled?: boolean;
   setVisible: (visible: boolean) => void;
   onSave?: () => void;
+  // onDataChanged: (data: any) => void;
 };
 export const AddVisitorPopup = ({
   title,
@@ -42,14 +49,22 @@ export const AddVisitorPopup = ({
   setVisible,
   wrapperAttr = { class: "" },
   isSaveDisabled = false,
-}: PropsWithChildren<PopupProps>) => {
+}: // onDataChanged,
+PropsWithChildren<PopupProps>) => {
   const [formData, setFormData] = useState({});
-
   const formRef = useRef(null);
   const handleHiding = () => {
     setVisible(false);
   };
 
+  const onSaveClick = () => {
+    onSave && onSave();
+  };
+
+  // const handleSubmit = (e: any) => {
+  //   e.preventDefault(); // 자동으로 폼 새고 방지
+  //   onDataChanged(formData);
+  // };
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault(); // 자동으로 폼 새고 방지
@@ -61,7 +76,7 @@ export const AddVisitorPopup = ({
             icon: "success",
             timer: 1500,
           });
-          // setVisible(false); // 창 닫기
+          setVisible(false); // 창 닫기
         } else {
           throw new Error("저장에 실패했습니다.");
         }
@@ -229,6 +244,7 @@ export const AddVisitorPopup = ({
                   width={100}
                   height={35}
                   disabled={isSaveDisabled} // 필드 요건 부적합시 전송X
+                  onClick={onSaveClick}
                 />
               </ButtonItem>
             </GroupItem>
