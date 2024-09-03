@@ -1,92 +1,37 @@
 {
   "visitorManagements": [
     {
-      "id": "1",
-      "visitorName": "김예린ㄴㄴㄴㄴㄴ",
-      "visitorCompany": "김예린회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
-    },
-    {
-      "id": "2",
-      "visitorName": "김따디",
-      "visitorCompany": "김따디회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
-    },
-    {
-      "id": "3",
-      "visitorName": "김예린",
-      "visitorCompany": "김예린회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
-    },
-    {
+      "visitorName": "유승현",
       "id": "4",
-      "visitorName": "김따디",
-      "visitorCompany": "김따디회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
+      "visitorCompany": "sdf",
+      "contactName": "dsf",
+      "visitPurpose": "dfd",
+      "visitStatus": "df",
+      "visitLocation": "df",
+      "contactCompany": "df"
     },
     {
-      "id": "5",
-      "visitorName": "김예린",
-      "visitorCompany": "김예린회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
-    },
-    {
+      "visitorName": "유승현",
       "id": "6",
+      "visitorCompany": "sdf",
+      "contactName": "dsf",
+      "visitPurpose": "dfd",
+      "visitStatus": "df",
+      "visitLocation": "df",
+      "contactCompany": "df"
+    },
+    {
+      "visitorName": "유승현",
+      "id": "5",
+      "visitorCompany": "sdf",
+      "contactName": "dsf",
+      "visitPurpose": "dfd",
+      "visitStatus": "df",
+      "visitLocation": "df",
+      "contactCompany": "df"
+    },
+    {
+      "id": "24",
       "visitorName": "김따디",
       "visitorCompany": "김따디회사",
       "visitorNumber": "010-0000-1111",
@@ -103,106 +48,159 @@
       "visitWorkPlace": "SH"
     },
     {
-      "id": "7",
+      "visitorName": "박문자",
+      "id": "23"
+    },
+    {
       "visitorName": "김예린",
-      "visitorCompany": "김예린회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
+      "id": "22"
     },
     {
-      "id": "8",
-      "visitorName": "김따디",
-      "visitorCompany": "김따디회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
+      "id": "cdb8",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorCompany": "f",
+      "visitorName": "fff"
     },
     {
-      "id": "9",
-      "visitorName": "김예린",
-      "visitorCompany": "김예린회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
+      "id": "bd08",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorCompany": "f",
+      "visitorName": "fff"
     },
     {
-      "id": "10",
-      "visitorName": "김따디",
-      "visitorCompany": "김따디회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
+      "id": "39f3",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "g",
+      "visitorCompany": "ggg"
     },
     {
-      "id": "11",
-      "visitorName": "김예린",
-      "visitorCompany": "김예린회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
+      "id": "609c",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "g",
+      "visitorCompany": "ggg"
     },
     {
-      "id": "20",
-      "visitorName": "김예린ㅇㄴㄷㄴ",
-      "visitorCompany": "김예린회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
+      "id": "e047",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "gaa",
+      "visitorCompany": "gggaa"
+    },
+    {
+      "id": "8748",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "gg않",
+      "visitorCompany": "ggzzzzz"
+    },
+    {
+      "id": "5913",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorCompany": "흏",
+      "visitorName": "ㅠ"
+    },
+    {
+      "id": "ec39",
+      "contactDepartment": "",
+      "visitWorkPlace": "네이버",
+      "visitorName": "ㅈㅈ",
+      "visitorCompany": "ㅈㅈㅈ"
+    },
+    {
+      "id": "16ef",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "11",
+      "visitorCompany": "11"
+    },
+    {
+      "id": "481b",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "ㅁㅇ",
+      "visitorCompany": "ㅇㄹㄴ"
+    },
+    {
+      "id": "21bf",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "ㄴㄴ",
+      "visitorCompany": "ㄴㄴ"
+    },
+    {
+      "id": "d47e",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorCompany": "ㄱㄹㄹ",
+      "visitorName": "ㄹ"
+    },
+    {
+      "id": "13f5",
+      "contactDepartment": "",
+      "visitWorkPlace": "카카오",
+      "visitorName": "ㅇㄹ",
+      "visitorCompany": "ㄴㅇㄹㄴㅇ"
+    },
+    {
+      "id": "caf4",
+      "contactDepartment": "",
+      "visitWorkPlace": "카카오",
+      "visitorName": "ㅇㄹ",
+      "visitorCompany": "ㄴㅇㄹㄴㅇ"
+    },
+    {
+      "id": "670a",
+      "contactDepartment": "",
+      "visitWorkPlace": "카카오",
+      "visitorName": "ㅋㅋ",
+      "visitorCompany": "ㅋㅋ"
+    },
+    {
+      "id": "3b6e",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "ㄴㄴㄴ",
+      "visitorCompany": "ㄴㄴ"
+    },
+    {
+      "id": "2f4f",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "ㄴㄴㄴ",
+      "visitorCompany": "ㄴㄴ"
+    },
+    {
+      "id": "647a",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "ㅁㅁ",
+      "visitorCompany": "ㅁㅁ"
+    },
+    {
+      "id": "8aa1",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "ㅁㅁ",
+      "visitorCompany": "ㅁㅁ"
+    },
+    {
+      "id": "08be",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "ㅋㅋ",
+      "visitorCompany": "ㅋㅋㅋ"
+    },
+    {
+      "id": "9e7c",
+      "contactDepartment": "",
+      "visitWorkPlace": "",
+      "visitorName": "ㅋㅋ",
+      "visitorCompany": "ㅋㅋㅋ"
     }
   ],
   "workplaces": [
@@ -215,41 +213,91 @@
       "body": "B"
     }
   ],
-  "accessStructure": {
-    "name": "John Heart",
-    "title": "SH",
-    "category": "Root",
-    "workplace": "SH",
-    "doortype": "BS",
-    "items": [
-      {
-        "name": "Samantha Bright",
-        "title": "Reader1",
-        "category": "Reader",
-        "workplace": "SH",
-        "doortype": "BS"
-      },
-      {
-        "name": "Arthur Miller",
-        "Tittitlele": "Reader2",
-        "category": "Reader",
-        "workplace": "SH",
-        "doortype": "BS"
-      },
-      {
-        "name": "Robert Reagan",
-        "title": "Reader3",
-        "category": "Reader",
-        "workplace": "SH",
-        "doortype": "BS"
-      },
-      {
-        "name": "Greta Sims",
-        "title": "Reader4",
-        "category": "Reader",
-        "workplace": "SH",
-        "doortype": "BS"
-      }
-    ]
-  }
+  "accessCount": [
+    {
+      "id": "1",
+      "region": "SH",
+      "city": "김지민",
+      "amount": 20,
+      "date": "2024-03-21"
+    },
+    {
+      "id": "2",
+      "region": "SH",
+      "city": "유딩딩",
+      "amount": 8,
+      "date": "2024-03-11"
+    },
+    {
+      "id": "3",
+      "region": "SH",
+      "city": "박가다",
+      "amount": 15,
+      "date": "2024-01-20"
+    },
+    {
+      "id": "4",
+      "region": "KK",
+      "city": "이미영",
+      "amount": 16,
+      "date": "2024-01-21"
+    },
+    {
+      "id": "5",
+      "region": "KK",
+      "city": "김바다",
+      "amount": 30,
+      "date": "2024-09-21"
+    }
+  ],
+  "accessStructure": [
+    {
+      "id": "1",
+      "head_id": -1,
+      "title": "SH",
+      "category": "Root",
+      "workplace": "SH",
+      "doortype": "BS"
+    },
+    {
+      "id": "2",
+      "head_id": 1,
+      "title": "Reader1",
+      "category": "Reader",
+      "workplace": "SH",
+      "doortype": "BS"
+    },
+    {
+      "id": "3",
+      "head_id": 1,
+      "title": "Reader2",
+      "category": "Reader",
+      "workplace": "SH",
+      "doortype": "BS"
+    },
+    {
+      "id": "4",
+      "head_id": 1,
+      "title": "Reader3",
+      "category": "Reader",
+      "workplace": "SH",
+      "doortype": "BS"
+    },
+    {
+      "id": "5",
+      "head_id": 1,
+      "title": "Reader4",
+      "category": "Reader",
+      "workplace": "SH",
+      "doortype": "BS"
+    },
+    {
+      "id": "6",
+      "head_id": -1,
+      "title": "KK",
+      "category": "Root",
+      "workplace": "KK",
+      "doortype": "BS"
+    }
+  ]
 }

@@ -1,15 +1,15 @@
 import React, { PropsWithChildren, useCallback, useRef, useState } from "react";
 import { Popup } from "devextreme-react/popup";
-import "./addVisitorPopup.scss";
 import Form, {
   ButtonItem,
   ButtonOptions,
   GroupItem,
   SimpleItem,
 } from "devextreme-react/cjs/form";
-import { ValidationGroupRef } from "devextreme-react/validation-group";
 import swal from "sweetalert";
 import axios from "axios";
+
+import { visitorManagementData } from "../../lib/api/visitormanagement";
 
 const departmentEditorOptions = {
   items: ["인사부", "개발부", "영업부"],
@@ -23,22 +23,6 @@ const workPlaceEditorOptions = {
   value: "",
 };
 
-type VisitorFormData = {
-  visitorName: string;
-  visitorCompany: string;
-  visitorNumber: string;
-  visitorDepartment: string;
-  visitorPosition: string;
-  contactName: string;
-  contactNumber: string;
-  contactCompany: string;
-  contactDepartment: string;
-  cardName: string;
-  visitLocation: string;
-  visitPurpose: string;
-  visitWorkPlace: string;
-};
-
 type PopupProps = {
   title: string;
   visible: boolean;
@@ -48,42 +32,47 @@ type PopupProps = {
   isSaveDisabled?: boolean;
   setVisible: (visible: boolean) => void;
   onSave?: () => void;
-  // formData: VisitorFormData;
 };
 export const AddVisitorPopup = ({
   title,
   visible,
   width = 900,
-  height = "auto",
+  height = 650,
   onSave,
   setVisible,
   wrapperAttr = { class: "" },
   isSaveDisabled = false,
-}: // formData,
-PropsWithChildren<PopupProps>) => {
-  const validationGroup = useRef<ValidationGroupRef>(null); //유효성 검사
-
-  const url = "http://localhost:3001/visitorManagements";
-
+}: PropsWithChildren<PopupProps>) => {
   const [formData, setFormData] = useState({});
 
+  const formRef = useRef(null);
+  const handleHiding = () => {
+    setVisible(false);
+  };
+
   const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      console.log(formData);
-      e.preventDefault(); // 기본 폼 제출 방지
-      axios
-        .post(url, formData)
-        .then((response) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault(); // 자동으로 폼 새고 방지
+      try {
+        const response = await visitorManagementData.insert(formData);
+        if (response.ok) {
           swal({
-            text: "방문자 정보 저장되었습니다.",
+            text: "방문 예약이 생성되었습니다.",
             icon: "success",
             timer: 1500,
           });
-          setVisible(false); // 창 닫힘
-        })
-        .catch((error) => {
-          console.error("Error:", error);
+          // setVisible(false); // 창 닫기
+        } else {
+          throw new Error("저장에 실패했습니다.");
+        }
+      } catch (error) {
+        swal({
+          text: "생성 실패했습니다.",
+          icon: "error",
+          timer: 1500,
         });
+        console.error("Error:", error);
+      }
     },
     [formData]
   );
@@ -95,14 +84,12 @@ PropsWithChildren<PopupProps>) => {
       buttons: ["취소", "확인"],
     }).then((result) => {
       if (result) {
-        // "확인" 버튼을 눌렀을 때
         swal({
           text: "적용되었습니다.",
           icon: "success",
           timer: 1500,
         });
       } else {
-        // "취소" 버튼을 눌렀을 때
         swal({
           text: "취소되었습니다.",
           icon: "warning",
@@ -112,9 +99,6 @@ PropsWithChildren<PopupProps>) => {
     });
   };
 
-  // management로 formData넘길 방법
-  // 넘겨서 버튼 누를때 setValue를 초기화 시키면 됨.
-
   return (
     <Popup
       title={title}
@@ -123,20 +107,19 @@ PropsWithChildren<PopupProps>) => {
       enableBodyScroll={true}
       hideOnOutsideClick={false} // 외부 클릭할 시 창 꺼짐
       resizeEnabled={true}
-      // maxHeight={700}
-      // onInitialized
       wrapperAttr={{
         ...wrapperAttr,
         class: `${wrapperAttr?.class} form-popup`,
       }}
       height={height}
-      onHiding={() => setVisible(false)} // 팝업이 닫힐 때 호출
+      onHiding={handleHiding} // 팝업이 닫힐 때 호출
       showCloseButton={true} // 닫기 버튼 표시
     >
       <div id="app-container">
-        <form action="/visitManagements" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Form
             formData={formData}
+            ref={formRef}
             labelLocation="top"
             showColonAfterLabel={false}
           >
@@ -245,6 +228,7 @@ PropsWithChildren<PopupProps>) => {
                   useSubmitBehavior={true}
                   width={100}
                   height={35}
+                  disabled={isSaveDisabled} // 필드 요건 부적합시 전송X
                 />
               </ButtonItem>
             </GroupItem>
