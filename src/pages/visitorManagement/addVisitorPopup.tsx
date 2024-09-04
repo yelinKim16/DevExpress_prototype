@@ -13,7 +13,8 @@ import Form, {
   SimpleItem,
 } from "devextreme-react/cjs/form";
 import swal from "sweetalert";
-import axios from "axios";
+import { RefObject } from "react";
+import { DataGridRef } from "devextreme-react/data-grid";
 
 import { visitorManagementData } from "../../lib/api/visitormanagement";
 
@@ -37,37 +38,27 @@ type PopupProps = {
   wrapperAttr?: { class: string };
   isSaveDisabled?: boolean;
   setVisible: (visible: boolean) => void;
-  onSave?: () => void;
-  // onDataChanged: (data: any) => void;
+  dataGridRef?: RefObject<DataGridRef>;
 };
 export const AddVisitorPopup = ({
   title,
   visible,
   width = 900,
   height = 650,
-  onSave,
   setVisible,
   wrapperAttr = { class: "" },
   isSaveDisabled = false,
-}: // onDataChanged,
-PropsWithChildren<PopupProps>) => {
+  dataGridRef,
+}: PropsWithChildren<PopupProps>) => {
   const [formData, setFormData] = useState({});
   const formRef = useRef(null);
   const handleHiding = () => {
     setVisible(false);
   };
 
-  const onSaveClick = () => {
-    onSave && onSave();
-  };
-
-  // const handleSubmit = (e: any) => {
-  //   e.preventDefault(); // 자동으로 폼 새고 방지
-  //   onDataChanged(formData);
-  // };
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault(); // 자동으로 폼 새고 방지
+      e.preventDefault(); // 자동으로 폼 새로고침
       try {
         const response = await visitorManagementData.insert(formData);
         if (response.ok) {
@@ -77,6 +68,7 @@ PropsWithChildren<PopupProps>) => {
             timer: 1500,
           });
           setVisible(false); // 창 닫기
+          dataGridRef?.current?.instance().refresh();
         } else {
           throw new Error("저장에 실패했습니다.");
         }
@@ -244,7 +236,6 @@ PropsWithChildren<PopupProps>) => {
                   width={100}
                   height={35}
                   disabled={isSaveDisabled} // 필드 요건 부적합시 전송X
-                  onClick={onSaveClick}
                 />
               </ButtonItem>
             </GroupItem>

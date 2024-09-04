@@ -2,6 +2,12 @@ import CustomStore from "devextreme/data/custom_store";
 import swal from "sweetalert";
 const url = "http://localhost:3001/visitorManagements";
 
+export interface Employee {
+  visitorName: string;
+  id: string;
+  visitorCompany: string;
+}
+
 export const visitorManagementData = new CustomStore({
   key: "id",
   load: function () {
@@ -48,3 +54,17 @@ export const visitorManagementData = new CustomStore({
       });
   },
 });
+
+// export const employees: Employee[] = [];
+
+// visitorManagementData.load().then((data) => {
+//   data.forEach((item: { id: any; visitorName: any; visitorCompany: any; }) => {
+//     employees.push({
+//       id: item.id,
+//       visitorName: item.visitorName,
+//       visitorCompany: item.visitorCompany,
+//     });
+//   });
+// }).catch((error) => {
+//   console.error("Failed to load visitor management data:", error);
+// });

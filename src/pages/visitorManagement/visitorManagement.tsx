@@ -23,17 +23,51 @@ import { exportDataGrid } from "devextreme/excel_exporter";
 import { AddVisitorPopup } from "./addVisitorPopup";
 import swal from "sweetalert";
 import { visitorManagementData } from "../../lib/api/visitormanagement";
-import notify from "devextreme/ui/notify";
-import { DataGrid as DataGridInstance } from "devextreme-react/data-grid";
 import dxDataGrid from "devextreme/ui/data_grid";
+import SelectBox from "devextreme-react/select-box";
+import { ValueChangedEvent } from "devextreme/ui/select_box";
+import { Employee } from "../../lib/api/visitormanagement";
+
+const titles = ["전체 선택", "전체 해제"];
+const titleLabel = { "aria-label": "Title" };
+const getEmployeeName = (row: Employee) => `${row.visitorName} `; // 출력에 필요한 아이들
+const getEmployeeNames = (
+  selectedRowsData: Employee[] // 전체 출력하는 아이들
+) =>
+  selectedRowsData.length
+    ? selectedRowsData.map(getEmployeeName).join(", ")
+    : "Nobody has been selected";
+
+// 체크박스를 위한 데이터 정의
+let employees: Employee[] = [];
+visitorManagementData
+  .load()
+  .then((data) => {
+    if (Array.isArray(data)) {
+      employees = data.map((item) => ({
+        id: item.id,
+        visitorName: item.visitorName,
+        visitorCompany: item.visitorCompany,
+      }));
+    } else {
+      console.error("Data is not an array:", data);
+    }
+  })
+  .catch((error) => {
+    console.error("Failed to load visitor management data:", error);
+  });
 
 export default function VisitorManagement() {
   const [isPopupVisible, setPopupVisible] = useState(false);
-  const [insertData, setInsertData] = useState(null);
+  const [prefix, setPrefix] = useState("");
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]); // 체크한 행의 key값
+  const [selectedEmployeeNames, setSelectedEmployeeNames] = useState<string>( // 체크한 이름 출력용
+    "Nobody has been selected"
+  );
   const dataGridRef = useRef<dxDataGrid>(null);
 
   const refresh = useCallback(() => {
-    visitorManagementData.load();
+    dataGridRef?.current?.instance().refresh();
   }, []);
 
   // popup open
@@ -54,19 +88,10 @@ export default function VisitorManagement() {
     e.component.cancelEditData(); // 수정 후 팝업 닫기
   }
 
-  const onSaveClick = useCallback(() => {
-    console.log("저장된다힛");
-    if (dataGridRef.current) {
-      console.log("null이아님");
-      dataGridRef.current.refresh(); // DataGrid 새로고침
-    }
-  }, []);
-
   // 엑셀 export
   const onExporting = (e: DataGridTypes.ExportingEvent) => {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet("Main sheet");
-
     exportDataGrid({
       component: e.component,
       worksheet,
@@ -78,6 +103,82 @@ export default function VisitorManagement() {
           "DataGrid.xlsx"
         );
       });
+    });
+  };
+
+  // 체크박스 전체선택/취소
+  const onSelectionChanged = useCallback(
+    ({
+      selectedRowKeys: changedRowKeys,
+      selectedRowsData,
+    }: {
+      selectedRowKeys: string[];
+      selectedRowsData: Employee[];
+    }) => {
+      setSelectedRowKeys(changedRowKeys);
+      setSelectedEmployeeNames(getEmployeeNames(selectedRowsData));
+    },
+    []
+  );
+
+  const onSelectionFilterChanged = useCallback((e: ValueChangedEvent) => {
+    const value = e.value as string;
+    let changedRowKeys: string[] = [];
+    let filteredEmployees: Employee[] = [];
+
+    if (value === "전체 선택") {
+      filteredEmployees = employees;
+      changedRowKeys = filteredEmployees.map((employee) => employee.id);
+    } else if (value === "전체 해제") {
+      dataGridRef.current?.instance().clearSelection();
+      setSelectedRowKeys([]);
+      setSelectedEmployeeNames("Nobody has been selected");
+    }
+
+    setPrefix(value);
+    setSelectedRowKeys(changedRowKeys);
+    setSelectedEmployeeNames(getEmployeeNames(filteredEmployees));
+    dataGridRef.current?.instance().selectRows(changedRowKeys, false);
+  }, []);
+
+  // 체크한 행 삭제
+  const onDeleted = () => {
+    swal({
+      text: "예약을 삭제하시겠습니까?",
+      icon: "info",
+      buttons: ["취소", "확인"],
+    }).then((result) => {
+      if (result) {
+        const deleteCodes = Array.from(selectedRowKeys);
+        if (deleteCodes.length === 0) {
+          swal({
+            text: "예약을 선택해주세요.",
+            icon: "error",
+            timer: 1500,
+          });
+          return;
+        }
+        Promise.all(
+          deleteCodes.map((code) => {
+            visitorManagementData.remove(code);
+          })
+        )
+          .then(() => {
+            swal({
+              text: "예약이 삭제 되었습니다.",
+              icon: "success",
+              timer: 1500,
+            });
+            dataGridRef?.current?.instance().refresh();
+          })
+          .catch(() => {
+            swal({
+              text: "예약 삭제를 실패했습니다.",
+              icon: "error",
+              timer: 1500,
+            });
+          });
+      }
     });
   };
 
@@ -93,6 +194,9 @@ export default function VisitorManagement() {
           remoteOperations={false} // 데이터가 서버에서 처리
           onExporting={onExporting}
           onRowUpdating={updateRow}
+          selectedRowKeys={selectedRowKeys}
+          ref={dataGridRef}
+          onSelectionChanged={onSelectionChanged}
         >
           <Paging defaultPageSize={10} />
           <Pager showPageSizeSelector={true} showInfo={true} />
@@ -103,17 +207,36 @@ export default function VisitorManagement() {
           <Export enabled={true} allowExportSelectedData={true} />
 
           <Toolbar>
-            <Item location="after" locateInMenu="auto">
+            <Item location="before">
+              <SelectBox
+                dataSource={titles}
+                inputAttr={titleLabel}
+                placeholder="선택"
+                width={150}
+                onValueChanged={onSelectionFilterChanged}
+                value={prefix}
+              />
+            </Item>
+            <Item location="before" locateInMenu="auto">
               <Button
                 icon="plus"
-                text="방문예약 정보작성"
+                text="추가"
                 type="default"
                 stylingMode="contained"
                 onClick={onAddVisitorClick}
               />
             </Item>
+            <Item location="before" locateInMenu="auto">
+              <Button
+                icon="remove"
+                text="삭제"
+                type="default"
+                stylingMode="contained"
+                onClick={onDeleted}
+              />
+            </Item>
             <Item
-              location="after"
+              location="before"
               locateInMenu="auto"
               showText="inMenu"
               widget="dxButton"
@@ -125,7 +248,7 @@ export default function VisitorManagement() {
                 onClick={refresh}
               />
             </Item>
-            <Item name="exportButton" />
+            <Item location="before" name="exportButton" />
             <Item name="searchPanel" locateInMenu="auto" />
           </Toolbar>
           <Column dataField="visitorName" caption="방문자 이름" width={150} />
@@ -147,12 +270,15 @@ export default function VisitorManagement() {
             allowAdding={true}
           ></Editing>
         </DataGrid>
+        <div className="selected-data">
+          <span className="caption">Selected Records:</span>{" "}
+          <span>{selectedEmployeeNames}</span>
+        </div>
         <AddVisitorPopup
           title="방문예약 정보작성"
           visible={isPopupVisible}
           setVisible={changePopupVisibility}
-          // onDataChanged={onCreateData}
-          onSave={onSaveClick}
+          dataGridRef={dataGridRef}
         />
       </div>
     </React.Fragment>
