@@ -1,10 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { PropsWithChildren, useCallback, useRef, useState } from "react";
 import { Popup } from "devextreme-react/popup";
 import Form, {
   ButtonItem,
@@ -15,7 +9,6 @@ import Form, {
 import swal from "sweetalert";
 import { RefObject } from "react";
 import { DataGridRef } from "devextreme-react/data-grid";
-
 import { visitorManagementData } from "../../lib/api/visitormanagement";
 
 const departmentEditorOptions = {
@@ -43,8 +36,8 @@ type PopupProps = {
 export const AddVisitorPopup = ({
   title,
   visible,
-  width = 900,
-  height = 650,
+  width = 700,
+  height = "auto",
   setVisible,
   wrapperAttr = { class: "" },
   isSaveDisabled = false,
@@ -52,8 +45,10 @@ export const AddVisitorPopup = ({
 }: PropsWithChildren<PopupProps>) => {
   const [formData, setFormData] = useState({});
   const formRef = useRef(null);
-  const handleHiding = () => {
+
+  const handleCloseForm = () => {
     setVisible(false);
+    setFormData({});
   };
 
   const handleSubmit = useCallback(
@@ -119,7 +114,7 @@ export const AddVisitorPopup = ({
         class: `${wrapperAttr?.class} form-popup`,
       }}
       height={height}
-      onHiding={handleHiding} // 팝업이 닫힐 때 호출
+      onHiding={handleCloseForm}
       showCloseButton={true} // 닫기 버튼 표시
     >
       <div id="app-container">
@@ -148,11 +143,6 @@ export const AddVisitorPopup = ({
                 </GroupItem>
                 <GroupItem colCount={2}>
                   <SimpleItem
-                    dataField="visitorNumber"
-                    label={{ text: "연락처" }}
-                    editorOptions={{ height: 35 }}
-                  />
-                  <SimpleItem
                     dataField="visitorDepartment"
                     label={{ text: "방문자 부서" }}
                     editorOptions={{ height: 35 }}
@@ -162,48 +152,20 @@ export const AddVisitorPopup = ({
                     label={{ text: "방문자 직급" }}
                     editorOptions={{ height: 35 }}
                   />
-                  <ButtonItem
+                  {/* <ButtonItem
                     horizontalAlignment="center"
                     cssClass="scan-button"
                   >
                     <ButtonOptions
                       text="스캐너"
                       onClick={onClickScanner}
-                      width={300}
+                      width={200}
                       height={40}
                     />
-                  </ButtonItem>
+                  </ButtonItem> */}
                 </GroupItem>
               </GroupItem>
-              <GroupItem>
-                <GroupItem
-                  caption="담당자 정보"
-                  name="HomeAddress"
-                  colCount={2}
-                >
-                  <SimpleItem
-                    dataField="contactName"
-                    label={{ text: "담당자 이름" }}
-                    editorOptions={{ height: 35 }}
-                  />
-                  <SimpleItem
-                    dataField="contactNumber"
-                    label={{ text: "사원번호" }}
-                    editorOptions={{ height: 35 }}
-                  />
-                  <SimpleItem
-                    dataField="contactCompany"
-                    label={{ text: "담당자 회사" }}
-                    editorOptions={{ height: 35 }}
-                  />
-                  <SimpleItem
-                    dataField="contactDepartment"
-                    label={{ text: "담당자 부서" }}
-                    editorType="dxSelectBox"
-                    editorOptions={departmentEditorOptions}
-                  />
-                </GroupItem>
-              </GroupItem>
+
               <GroupItem>
                 <GroupItem caption="방문 정보" name="HomeAddress" colCount={2}>
                   <SimpleItem

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { saveAs } from "file-saver-es";
 import { Workbook } from "exceljs";
 import "./visitorManagement.scss";
@@ -16,7 +16,6 @@ import {
   Editing,
   Paging,
   Pager,
-  DataGridRef,
 } from "devextreme-react/data-grid";
 import Button from "devextreme-react/button";
 import { exportDataGrid } from "devextreme/excel_exporter";
@@ -26,20 +25,13 @@ import { visitorManagementData } from "../../lib/api/visitormanagement";
 import dxDataGrid from "devextreme/ui/data_grid";
 import SelectBox from "devextreme-react/select-box";
 import { ValueChangedEvent } from "devextreme/ui/select_box";
-import { Employee } from "../../lib/api/visitormanagement";
+import { VisitorManagements } from "../../lib/api/visitormanagement";
 
 const titles = ["전체 선택", "전체 해제"];
 const titleLabel = { "aria-label": "Title" };
-const getEmployeeName = (row: Employee) => `${row.visitorName} `; // 출력에 필요한 아이들
-const getEmployeeNames = (
-  selectedRowsData: Employee[] // 전체 출력하는 아이들
-) =>
-  selectedRowsData.length
-    ? selectedRowsData.map(getEmployeeName).join(", ")
-    : "Nobody has been selected";
 
 // 체크박스를 위한 데이터 정의
-let employees: Employee[] = [];
+let employees: VisitorManagements[] = [];
 visitorManagementData
   .load()
   .then((data) => {
@@ -49,8 +41,6 @@ visitorManagementData
         visitorName: item.visitorName,
         visitorCompany: item.visitorCompany,
       }));
-    } else {
-      console.error("Data is not an array:", data);
     }
   })
   .catch((error) => {
@@ -61,11 +51,9 @@ export default function VisitorManagement() {
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [prefix, setPrefix] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]); // 체크한 행의 key값
-  const [selectedEmployeeNames, setSelectedEmployeeNames] = useState<string>( // 체크한 이름 출력용
-    "Nobody has been selected"
-  );
   const dataGridRef = useRef<dxDataGrid>(null);
 
+  // 새로고침
   const refresh = useCallback(() => {
     dataGridRef?.current?.instance().refresh();
   }, []);
@@ -79,6 +67,7 @@ export default function VisitorManagement() {
     setPopupVisible(isVisble);
   }, []);
 
+  // 편집
   function updateRow(e: any) {
     const { key, newData, oldData } = e;
     const updatedData = { ...oldData, ...newData }; // 병합하여 전체 데이터를 생성
@@ -110,13 +99,11 @@ export default function VisitorManagement() {
   const onSelectionChanged = useCallback(
     ({
       selectedRowKeys: changedRowKeys,
-      selectedRowsData,
     }: {
       selectedRowKeys: string[];
-      selectedRowsData: Employee[];
+      selectedRowsData: VisitorManagements[];
     }) => {
       setSelectedRowKeys(changedRowKeys);
-      setSelectedEmployeeNames(getEmployeeNames(selectedRowsData));
     },
     []
   );
@@ -124,7 +111,7 @@ export default function VisitorManagement() {
   const onSelectionFilterChanged = useCallback((e: ValueChangedEvent) => {
     const value = e.value as string;
     let changedRowKeys: string[] = [];
-    let filteredEmployees: Employee[] = [];
+    let filteredEmployees: VisitorManagements[] = [];
 
     if (value === "전체 선택") {
       filteredEmployees = employees;
@@ -132,12 +119,10 @@ export default function VisitorManagement() {
     } else if (value === "전체 해제") {
       dataGridRef.current?.instance().clearSelection();
       setSelectedRowKeys([]);
-      setSelectedEmployeeNames("Nobody has been selected");
     }
 
     setPrefix(value);
     setSelectedRowKeys(changedRowKeys);
-    setSelectedEmployeeNames(getEmployeeNames(filteredEmployees));
     dataGridRef.current?.instance().selectRows(changedRowKeys, false);
   }, []);
 
@@ -268,12 +253,14 @@ export default function VisitorManagement() {
             allowUpdating={true}
             allowDeleting={true}
             allowAdding={true}
-          ></Editing>
+            popup={{
+              title: "방문예약 정보수정",
+              showTitle: true,
+              width: 700,
+              height: 450,
+            }}
+          />
         </DataGrid>
-        <div className="selected-data">
-          <span className="caption">Selected Records:</span>{" "}
-          <span>{selectedEmployeeNames}</span>
-        </div>
         <AddVisitorPopup
           title="방문예약 정보작성"
           visible={isPopupVisible}

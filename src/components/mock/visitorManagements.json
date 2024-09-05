@@ -1,14 +1,21 @@
 {
   "visitorManagements": [
     {
-      "visitorName": "유승현11111",
+      "visitorName": "유병승",
       "id": "1",
-      "visitorCompany": "sdf",
-      "contactName": "dsf",
-      "visitPurpose": "dfd",
-      "visitStatus": "df",
-      "visitLocation": "df",
-      "contactCompany": "df"
+      "visitorCompany": "유병승",
+      "visitorNumber": "010-0000-1111",
+      "visitorDepartment": "개발부",
+      "visitorPosition": "사원",
+      "contactNumber": 1000,
+      "contactName": "담당자",
+      "contactCompany": "SH",
+      "contactDepartment": "인사부",
+      "cardName": "1000",
+      "visitPurpose": "회의",
+      "visitStatus": "방문전",
+      "visitLocation": "회의실",
+      "visitWorkPlace": "SH"
     },
     {
       "id": "3",
@@ -45,38 +52,10 @@
       "visitWorkPlace": "SH"
     },
     {
-      "id": "5",
-      "visitorName": "김따디5",
-      "visitorCompany": "김따디회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
-    },
-    {
-      "id": "6",
-      "visitorName": "김따디6",
-      "visitorCompany": "김따디회사",
-      "visitorNumber": "010-0000-1111",
-      "visitorDepartment": "개발부",
-      "visitorPosition": "사원",
-      "contactNumber": 1000,
-      "contactName": "담당자",
-      "contactCompany": "SH",
-      "contactDepartment": "인사부",
-      "cardName": "1000",
-      "visitPurpose": "회의",
-      "visitStatus": "방문전",
-      "visitLocation": "회의실",
-      "visitWorkPlace": "SH"
+      "id": "f33d",
+      "visitWorkPlace": "네이버",
+      "visitorName": "weㅋㅋ",
+      "visitorCompany": "dddd"
     }
   ],
   "accessStructure": [
@@ -127,6 +106,29 @@
       "category": "Root",
       "workplace": "KK",
       "doortype": "BS"
+    }
+  ],
+  "accessCount": [
+    {
+      "id": "1",
+      "region": "이즈원",
+      "city": "김바다",
+      "date": "2024-08-12",
+      "amount": 3000
+    },
+    {
+      "id": "2",
+      "region": "이즈원",
+      "city": "김대리",
+      "date": "2024-02-12",
+      "amount": 4000
+    },
+    {
+      "id": "3",
+      "region": "카카오",
+      "city": "윤나라",
+      "date": "2024-04-10",
+      "amount": 4000
     }
   ]
 }

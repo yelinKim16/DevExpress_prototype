@@ -2,7 +2,7 @@ import CustomStore from "devextreme/data/custom_store";
 import swal from "sweetalert";
 const url = "http://localhost:3001/visitorManagements";
 
-export interface Employee {
+export interface VisitorManagements {
   visitorName: string;
   id: string;
   visitorCompany: string;
@@ -29,7 +29,23 @@ export const visitorManagementData = new CustomStore({
       method: "PUT",
       body: JSON.stringify(values),
       headers: { "Content-Type": "application/json" },
-    });
+    })
+      .then((response) => {
+        if (response.ok) {
+          swal({
+            text: "방문 예약이 수정되었습니다.",
+            icon: "success",
+            timer: 1500,
+          });
+        }
+      })
+      .catch((error) => {
+        swal({
+          text: "수정에 실패했습니다.",
+          icon: "error",
+          timer: 1500,
+        });
+      });
   },
   remove: function (key) {
     return fetch(`${url}/${key}`, {
