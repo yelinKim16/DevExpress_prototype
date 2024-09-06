@@ -50,12 +50,6 @@
       "visitStatus": "방문전",
       "visitLocation": "회의실",
       "visitWorkPlace": "SH"
-    },
-    {
-      "id": "f33d",
-      "visitWorkPlace": "네이버",
-      "visitorName": "weㅋㅋ",
-      "visitorCompany": "dddd"
     }
   ],
   "accessStructure": [
