@@ -28,6 +28,10 @@ export const navigation = [
         text: "방문자관리",
         path: "/access-count",
       },
+      {
+        text: "테스트페이지",
+        path: "/company",
+      },
     ],
   },
 ];

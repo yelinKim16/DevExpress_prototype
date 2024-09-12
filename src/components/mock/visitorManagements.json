@@ -19,7 +19,7 @@
     },
     {
       "id": "3",
-      "visitorName": "김따디3",
+      "visitorName": "김따디3ㄴㄴㄴㄴ",
       "visitorCompany": "김따디회사",
       "visitorNumber": "010-0000-1111",
       "visitorDepartment": "개발부",
@@ -36,7 +36,7 @@
     },
     {
       "id": "4",
-      "visitorName": "김따디4",
+      "visitorName": "김따디",
       "visitorCompany": "김따디회사",
       "visitorNumber": "010-0000-1111",
       "visitorDepartment": "개발부",
@@ -50,6 +50,12 @@
       "visitStatus": "방문전",
       "visitLocation": "회의실",
       "visitWorkPlace": "SH"
+    },
+    {
+      "id": "6b40",
+      "visitWorkPlace": "",
+      "visitorName": "ㄷㄷ",
+      "visitorCompany": "ㄷㄷㄷ"
     }
   ],
   "accessStructure": [
@@ -123,6 +129,22 @@
       "city": "윤나라",
       "date": "2024-04-10",
       "amount": 4000
+    }
+  ],
+  "employees": [
+    {
+      "id": "1",
+      "FirstName": "Johnㅋㅋ",
+      "LastName": "Doe",
+      "Phone": "30",
+      "Position": "사원ㄴㄴㄴ"
+    },
+    {
+      "id": "2",
+      "FirstName": "Jane",
+      "LastName": "Smith",
+      "Phone": "30",
+      "Position": "사원"
     }
   ]
 }

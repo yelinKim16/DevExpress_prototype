@@ -12,18 +12,6 @@ import { DataGridRef } from "devextreme-react/data-grid";
 import { visitorManagementData } from "../../lib/api/visitormanagement";
 import { useScreenSize } from "../../utils/media-query";
 
-const departmentEditorOptions = {
-  items: ["인사부", "개발부", "영업부"],
-  searchEnabled: true, // 선택 항목 검색을 허용하려면 추가
-  value: "", // 초기 선택된 값 (선택사항)
-};
-
-const workPlaceEditorOptions = {
-  items: ["이즈원", "네이버", "카카오"],
-  searchEnabled: true,
-  value: "",
-};
-
 type PopupProps = {
   title: string;
   visible: boolean;
@@ -34,7 +22,7 @@ type PopupProps = {
   setVisible: (visible: boolean) => void;
   dataGridRef?: RefObject<DataGridRef>;
 };
-export const AddVisitorPopup = ({
+export const EditVisitorPopup = ({
   title,
   visible,
   width = 700,
@@ -80,28 +68,6 @@ export const AddVisitorPopup = ({
     },
     [formData]
   );
-
-  const onClickScanner = () => {
-    swal({
-      text: "스캐너를 실행하시겠습니까?",
-      icon: "info",
-      buttons: ["취소", "확인"],
-    }).then((result) => {
-      if (result) {
-        swal({
-          text: "적용되었습니다.",
-          icon: "success",
-          timer: 1500,
-        });
-      } else {
-        swal({
-          text: "취소되었습니다.",
-          icon: "warning",
-          timer: 1500,
-        });
-      }
-    });
-  };
 
   return (
     <Popup
@@ -155,17 +121,6 @@ export const AddVisitorPopup = ({
                     label={{ text: "방문자 직급" }}
                     editorOptions={{ height: 35 }}
                   />
-                  {/* <ButtonItem
-                    horizontalAlignment="center"
-                    cssClass="scan-button"
-                  >
-                    <ButtonOptions
-                      text="스캐너"
-                      onClick={onClickScanner}
-                      width={200}
-                      height={40}
-                    />
-                  </ButtonItem> */}
                 </GroupItem>
               </GroupItem>
 
@@ -185,12 +140,6 @@ export const AddVisitorPopup = ({
                     dataField="visitPurpose"
                     label={{ text: "방문목적" }}
                     editorOptions={{ height: 35 }}
-                  />
-                  <SimpleItem
-                    dataField="visitWorkPlace"
-                    label={{ text: "사업장" }}
-                    editorType="dxSelectBox"
-                    editorOptions={workPlaceEditorOptions}
                   />
                 </GroupItem>
               </GroupItem>

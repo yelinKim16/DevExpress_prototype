@@ -58,7 +58,7 @@ export default function VisitorManagement() {
     dataGridRef?.current?.instance().refresh();
   }, []);
 
-  // popup open
+  // 추가 popup open
   const onAddVisitorClick = () => {
     setPopupVisible(true);
   };
@@ -174,6 +174,7 @@ export default function VisitorManagement() {
         <DataGrid
           dataSource={visitorManagementData as any}
           showBorders={false}
+          height="100%"
           columnAutoWidth={true} // 자동 너비
           allowColumnReordering={true} // 사용자가 너비조정
           remoteOperations={false} // 데이터가 서버에서 처리
@@ -236,23 +237,67 @@ export default function VisitorManagement() {
             <Item location="before" name="exportButton" />
             <Item name="searchPanel" locateInMenu="auto" />
           </Toolbar>
-          <Column dataField="visitorName" caption="방문자 이름" width={150} />
+          {/* <Column
+            caption="수정"
+            type="buttons"
+            buttons={[
+              {
+                hint: "Edit",
+                icon: "edit",
+                onClick: (e) => editRow(e.row?.data.id),
+              },••••••l@•••••••.•••
+            ]}
+          /> */}
+          <Column type="buttons" width={100}>
+            <Button text="edit" />
+          </Column>
+          <Column
+            dataField="visitorName"
+            caption="방문자 이름"
+            hidingPriority={7} // 우선순위를 매겨 화면 사이즈에 따라 숨김처리를 한다.
+            width={150}
+          />
           <Column
             dataField="visitorCompany"
             caption="방문자 회사"
+            hidingPriority={1}
             width={150}
           />
-          <Column dataField="contactNumber" caption="연락처" alignment="left" />
-          <Column dataField="contactName" caption="담당자 번호" />
-          <Column dataField="contactCompany" caption="담당자 회사" />
-          <Column dataField="visitPurpose" caption="방문 목적" />
-          <Column dataField="visitStatus" caption="방문 상태" />
-          <Column dataField="visitLocation" caption="방문 위치" />
+          <Column
+            dataField="contactNumber"
+            caption="연락처"
+            hidingPriority={4}
+            alignment="left"
+          />
+          <Column
+            dataField="contactName"
+            caption="담당자 번호"
+            hidingPriority={3}
+          />
+          <Column
+            dataField="contactCompany"
+            caption="담당자 회사"
+            hidingPriority={2}
+          />
+          <Column
+            dataField="visitPurpose"
+            caption="방문 목적"
+            hidingPriority={5}
+          />
+          <Column
+            dataField="visitStatus"
+            caption="방문 상태"
+            hidingPriority={7}
+          />
+          <Column
+            dataField="visitLocation"
+            caption="방문 위치"
+            hidingPriority={0}
+          />
           <Editing
             mode="popup"
-            allowUpdating={true}
-            allowDeleting={true}
-            allowAdding={true}
+            allowUpdating
+            allowDeleting
             popup={{
               title: "방문예약 정보수정",
               showTitle: true,

@@ -4,3 +4,4 @@ export { default as TasksPage } from "./tasks/tasks";
 export { default as VisitorManagement } from "./visitorManagement/visitorManagement";
 export { default as AccessStructure } from "./accessStructure/accessStructure";
 export { default as AccessCount } from "./accessCount/accessCount";
+export { default as CompanyPage } from "./company/company";
